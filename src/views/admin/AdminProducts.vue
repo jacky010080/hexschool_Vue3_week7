@@ -48,7 +48,7 @@
         </tr>
       </tbody>
     </table>
-    <!-- <pagination :pages="page" :get-data="getData"></pagination> -->
+    <PaginationView :pages="page" @emit-page="getData"></PaginationView>
     </div>
     <!-- 新增||編輯Modal -->
     <ProductModal
@@ -68,6 +68,7 @@
 <script>
 import ProductModal from '../../components/ProductModal.vue'
 import DeleteModal from '../../components/DeleteModal.vue'
+import PaginationView from '../../components/PaginationView.vue'
 const { VITE_API, VITE_APIPATH } = import.meta.env
 
 export default {
@@ -83,7 +84,8 @@ export default {
   },
   components: {
     ProductModal,
-    DeleteModal
+    DeleteModal,
+    PaginationView
   },
   methods: {
     // 將資料庫中的資料丟進data
