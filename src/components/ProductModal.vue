@@ -174,13 +174,13 @@
         </div>
         <div class="modal-footer">
           <button type="button"
-                class="btn btn-outline-secondary"
-                data-bs-dismiss="modal">
+            class="btn btn-outline-secondary"
+            data-bs-dismiss="modal">
             取消
           </button>
           <button type="button"
-                class="btn btn-primary"
-                @click="updateProduct"
+            class="btn btn-primary"
+            @click="updateProduct"
           >
             確認
           </button>
@@ -193,7 +193,7 @@
 <script>
 import { Modal } from 'bootstrap'
 
-const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env
+const { VITE_API, VITE_APIPATH } = import.meta.env
 export default {
   props: ['isNew', 'product'],
   data () {
@@ -219,7 +219,7 @@ export default {
       const uploadedFile = this.$refs.fileInput.files[0]
       const formData = new FormData()
       formData.append('file-to-upload', uploadedFile)
-      const url = `${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/upload`
+      const url = `${VITE_API}/v2/api/${VITE_APIPATH}/admin/upload`
       this.status.fileUploading = true
       this.$http.post(url, formData, {
         headers: {

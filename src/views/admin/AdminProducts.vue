@@ -60,7 +60,7 @@
     <!-- 刪除商品Modal -->
     <DeleteModal
     ref="delModal"
-    :product="tempProduct"
+    :item="tempProduct"
     @del-product="deleteProduct">
     </DeleteModal>
 </template>

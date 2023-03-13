@@ -23,7 +23,7 @@
         <div class="modal-body">
           是否刪除
           <!-- 顯示出想刪除商品的title -->
-          <strong class="text-danger">{{ product.title }}</strong>
+          <strong class="text-danger">{{ item.title }}</strong>
           商品(刪除後將無法恢復)。
         </div>
         <div class="modal-footer">
@@ -52,7 +52,7 @@
 import { Modal } from 'bootstrap'
 
 export default {
-  props: ['product'],
+  props: ['item'],
   data () {
     return {
       modal: ''
