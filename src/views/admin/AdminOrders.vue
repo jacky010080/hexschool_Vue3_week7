@@ -45,7 +45,7 @@
               </button>
               <button type="button"
               @click="openDelModal(order)"
-              class="btn btn-outline-danger btn-sm">
+              class="btn btn-outline-warning btn-sm">
                 刪除
               </button>
             </div>
@@ -64,7 +64,7 @@
   <DeleteModal
     ref="delModal"
     :item="selectOrder"
-    @del-item="deleteOrder"
+    @delete="deleteOrder"
   ></DeleteModal>
 </template>
 
@@ -84,6 +84,11 @@ export default {
       isLoading: false
     }
   },
+  components: {
+    PaginationView,
+    OrderModal,
+    DeleteModal
+  },
   methods: {
     getOrders (page = 1) {
       const url = `${VITE_API}/v2/api/${VITE_APIPATH}/admin/orders?page=${page}`
@@ -95,7 +100,7 @@ export default {
           this.pagination = res.data.pagination
         })
         .catch(err => {
-          console.log(err)
+          alert(err.response.data.message)
           this.isLoading = false
         })
     },
@@ -107,12 +112,13 @@ export default {
       this.isLoading = true
       this.$http.put(url, { data: paid })
         .then(res => {
+          alert(res.data.message)
           this.isLoading = false
           this.getOrders(this.currentPage)
           this.$refs.orderModal.modal.hide()
         })
         .catch(err => {
-          console.log(err)
+          alert(err.data.message)
           this.isLoading = false
         })
     },
@@ -129,20 +135,16 @@ export default {
       this.isLoading = true
       this.$http.delete(url)
         .then(res => {
+          alert(res.data.message)
           this.isLoading = false
           this.getOrders(this.currentPage)
           this.$refs.delModal.modal.hide()
         })
         .catch(err => {
-          console.log(err)
+          alert(err.data.message)
           this.isLoading = false
         })
     }
-  },
-  components: {
-    PaginationView,
-    OrderModal,
-    DeleteModal
   },
   mounted () {
     this.getOrders()

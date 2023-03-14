@@ -109,13 +109,13 @@
         </div>
         <div class="modal-body d-flex justify-content-end">
           <button type="button"
-                class="btn btn-outline-secondary me-2"
-                data-bs-dismiss="modal">
+            class="btn btn-outline-warning me-2"
+            data-bs-dismiss="modal">
             取消
           </button>
           <button type="button"
-                class="btn btn-primary"
-                @click="$emit('update-order', selectOrder)"
+            class="btn btn-primary"
+            @click="$emit('update-order', selectOrder)"
           >
             確認
           </button>

@@ -38,7 +38,7 @@
           <button
             type="button"
             class="btn btn-danger"
-            @click="$emit('del-product')"
+            @click="$emit('delete')"
           >
             確認刪除
           </button>

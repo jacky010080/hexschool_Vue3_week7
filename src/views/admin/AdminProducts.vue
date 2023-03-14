@@ -1,5 +1,4 @@
 <template>
-  後台產品列表
   <div class="container">
     <div class="text-end mt-4">
       <button class="btn btn-primary" @click="openModal('new')">
@@ -38,7 +37,7 @@
               </button>
               <button
                 type="button"
-                class="btn btn-outline-danger btn-sm"
+                class="btn btn-outline-warning btn-sm"
                 @click="openModal('delete', product)"
               >
                 刪除
@@ -61,7 +60,7 @@
     <DeleteModal
     ref="delModal"
     :item="tempProduct"
-    @del-product="deleteProduct">
+    @delete="deleteProduct">
     </DeleteModal>
 </template>
 

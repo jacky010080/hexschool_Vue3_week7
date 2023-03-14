@@ -1,9 +1,9 @@
 <template>
-  這是『後台』頁面
+  歡迎來到後台！
   <router-link to="/admin/products">後台產品列表</router-link> |
   <router-link to="/admin/orders">後台訂單列表</router-link> |
-  <router-link to="/">回到前台</router-link> |
-  <a href="#" @click.prevent="logout">登出</a>
+  <router-link to="/">回到前台</router-link>
+  <a href="#" @click.prevent="logout" class="btn btn-warning btn-sm">登出</a>
   <hr>
   <RouterView></RouterView>
 </template>
