@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <LoadingView v-model:active="isLoading"></LoadingView>
     <div class="text-end mt-4">
       <button class="btn btn-primary" @click="openModal('new')">
         建立新的產品
@@ -68,6 +69,7 @@
 import ProductModal from '../../components/ProductModal.vue'
 import DeleteModal from '../../components/DeleteModal.vue'
 import PaginationView from '../../components/PaginationView.vue'
+import Swal from 'sweetalert2'
 const { VITE_API, VITE_APIPATH } = import.meta.env
 
 export default {
@@ -78,7 +80,8 @@ export default {
       tempProduct: {
         imagesUrl: []
       },
-      page: {}
+      page: {},
+      isLoading: false
     }
   },
   components: {
@@ -87,16 +90,23 @@ export default {
     PaginationView
   },
   methods: {
-    // 將資料庫中的資料丟進data
     getData (page = 1) {
-      this.$http
-        .get(`${VITE_API}/v2/api/${VITE_APIPATH}/admin/products/?page=${page}`)
+      const url = `${VITE_API}/v2/api/${VITE_APIPATH}/admin/products/?page=${page}`
+      this.isLoading = true
+      this.$http.get(url)
         .then((res) => {
+          this.isLoading = false
           this.products = res.data.products
           this.page = res.data.pagination
         })
         .catch((err) => {
-          alert(err.response.data.message)
+          this.isLoading = false
+          Swal.fire({
+            icon: 'error',
+            title: `錯誤 ${err.response.status}`,
+            text: err.response.data.message,
+            confirmButtonText: 'OK'
+          })
         })
     },
     openModal (isNew, product) {
@@ -121,37 +131,59 @@ export default {
     },
     updateProduct () {
       let http = 'post'
-      let apiUrl = `${VITE_API}/v2/api/${VITE_APIPATH}/admin/product`
+      let url = `${VITE_API}/v2/api/${VITE_APIPATH}/admin/product`
+      this.isLoading = true
       if (!this.isNew) {
         http = 'put'
-        apiUrl = `${VITE_API}/v2/api/${VITE_APIPATH}/admin/product/${this.tempProduct.id}`
+        url = `${VITE_API}/v2/api/${VITE_APIPATH}/admin/product/${this.tempProduct.id}`
       }
-      // 根據商品是否為新商品，分別串接對應api
-      this.$http[http](apiUrl, {
+      this.$http[http](url, {
         data: this.tempProduct
       })
         .then((res) => {
-          alert(res.data.message)
-          this.$refs.productModal.modal.hide() // 關閉Modal互動視窗
-          this.getData() // 重新取得商品資料
+          this.isLoading = false
+          this.getData()
+          this.$refs.productModal.modal.hide()
+          if (!this.isNew) {
+            Swal.fire({
+              icon: 'success',
+              title: res.data.message,
+              confirmButtonText: 'OK'
+            })
+          }
         })
         .catch((err) => {
-          alert(err.data.message)
+          this.isLoading = false
+          Swal.fire({
+            icon: 'error',
+            title: `錯誤 ${err.response.status}`,
+            text: err.response.data.message,
+            confirmButtonText: 'OK'
+          })
         })
     },
-    // 刪除單筆商品
     deleteProduct () {
-      this.$http
-        .delete(
-          `${VITE_API}/v2/api/${VITE_APIPATH}/admin/product/${this.tempProduct.id}`
-        )
+      const url = `${VITE_API}/v2/api/${VITE_APIPATH}/admin/product/${this.tempProduct.id}`
+      this.isLoading = true
+      this.$http.delete(url)
         .then((res) => {
-          alert(res.data.message)
+          this.isLoading = false
           this.$refs.delModal.modal.hide()
-          this.getData() // 重新取得商品資料
+          this.getData()
+          Swal.fire({
+            icon: 'success',
+            title: res.data.message,
+            confirmButtonText: 'OK'
+          })
         })
         .catch((err) => {
-          alert(err.data.message)
+          this.isLoading = false
+          Swal.fire({
+            icon: 'error',
+            title: `錯誤 ${err.response.status}`,
+            text: err.response.data.message,
+            confirmButtonText: 'OK'
+          })
         })
     }
   },

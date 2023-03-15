@@ -11,6 +11,8 @@ import VueAxios from 'vue-axios'
 
 import { date, currency } from './methods/filters'
 
+import Loading from 'vue-loading-overlay'
+
 const app = createApp(App)
 app.config.globalProperties.$filters = {
   date,
@@ -19,5 +21,6 @@ app.config.globalProperties.$filters = {
 
 app.use(VueAxios, axios)
 app.use(router)
+app.component('LoadingView', Loading)
 
 app.mount('#app')

@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <LoadingView v-model:active="isLoading"></LoadingView>
     <table class="table mt-4">
       <thead>
         <tr>
@@ -72,6 +73,7 @@
 import PaginationView from '../../components/PaginationView.vue'
 import OrderModal from '../../components/OrderModal.vue'
 import DeleteModal from '../../components/DeleteModal.vue'
+import Swal from 'sweetalert2'
 const { VITE_API, VITE_APIPATH } = import.meta.env
 
 export default {
@@ -100,8 +102,13 @@ export default {
           this.pagination = res.data.pagination
         })
         .catch(err => {
-          alert(err.response.data.message)
           this.isLoading = false
+          Swal.fire({
+            icon: 'error',
+            title: `錯誤 ${err.response.status}`,
+            text: err.response.data.message,
+            confirmButtonText: 'OK'
+          })
         })
     },
     updatePaidStatus (order) {
@@ -116,10 +123,20 @@ export default {
           this.isLoading = false
           this.getOrders(this.currentPage)
           this.$refs.orderModal.modal.hide()
+          Swal.fire({
+            icon: 'success',
+            title: res.data.message,
+            confirmButtonText: 'OK'
+          })
         })
         .catch(err => {
-          alert(err.data.message)
           this.isLoading = false
+          Swal.fire({
+            icon: 'error',
+            title: `錯誤 ${err.response.status}`,
+            text: err.response.data.message,
+            confirmButtonText: 'OK'
+          })
         })
     },
     openModal (order) {
@@ -135,14 +152,23 @@ export default {
       this.isLoading = true
       this.$http.delete(url)
         .then(res => {
-          alert(res.data.message)
           this.isLoading = false
           this.getOrders(this.currentPage)
           this.$refs.delModal.modal.hide()
+          Swal.fire({
+            icon: 'success',
+            title: res.data.message,
+            confirmButtonText: 'OK'
+          })
         })
         .catch(err => {
-          alert(err.data.message)
           this.isLoading = false
+          Swal.fire({
+            icon: 'error',
+            title: `錯誤 ${err.response.status}`,
+            text: err.response.data.message,
+            confirmButtonText: 'OK'
+          })
         })
     }
   },
